@@ -3,6 +3,7 @@ package com.example.todoservicecallrestapi;
 import com.example.todoservicecallrestapi.model.Todo;
 import com.example.todoservicecallrestapi.repository.TodoRepository;
 import com.example.todoservicecallrestapi.service.JsonPlaceholderService;
+import com.example.todoservicecallrestapi.service.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +29,7 @@ public class TodoServiceCallRestApiApplication {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(JsonPlaceholderService jsonPlaceholderService, TodoRepository repository){
+    CommandLineRunner commandLineRunner(JsonPlaceholderService jsonPlaceholderService, TodoRepository repository, TodoService service){
         return args -> {
           // when the application loads get the 200 todos from json placeholder
             List<Todo> todos = jsonPlaceholderService.getTodos();
@@ -37,7 +38,7 @@ public class TodoServiceCallRestApiApplication {
             LOG.info("Saved {} todos in the database",todos.size());
 
             // push this information to our dashboard service
-
+            service.sendToDashboard(todos);
         };
     }
 }
